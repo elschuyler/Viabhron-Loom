@@ -2,393 +2,155 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Viabhron Loom</title>
-    <style>
-        :root {
-            --cyan: #00f2ff;
-            --cyan-glow: rgba(0, 242, 255, 0.3);
-            --bg-dark: #060608;
-            --panel-bg: rgba(10, 15, 20, 0.95);
-            --grid-line: rgba(0, 242, 255, 0.07);
-            --text-main: #e0f8ff;
-            --text-muted: #6b8a99;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            background-image: 
-                linear-gradient(var(--grid-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 24px 24px;
-            color: var(--text-main);
-            padding: 12px;
-            min-height: 100vh;
-        }
-
-        /* Technical Grid & Node Aesthetic */
-        .loom-container {
-            background: var(--panel-bg);
-            border: 1px solid var(--cyan);
-            box-shadow: 0 0 15px var(--cyan-glow), inset 0 0 20px rgba(0, 242, 255, 0.05);
-            border-radius: 4px;
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        .loom-container::before, .loom-container::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: var(--cyan);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--cyan);
-        }
-        .loom-container::before { top: 4px; left: 4px; }
-        .loom-container::after { top: 4px; right: 4px; }
-
-        header {
-            border-bottom: 1px solid var(--cyan);
-            padding: 16px;
-            text-align: center;
-            background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.1), transparent);
-        }
-
-        h1 {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 5px var(--cyan);
-        }
-
-        /* Mode Switcher */
-        .nav-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: var(--cyan);
-            border-bottom: 1px solid var(--cyan);
-        }
-
-        .nav-btn {
-            background: var(--panel-bg);
-            color: var(--text-muted);
-            border: none;
-            padding: 14px 8px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            min-height: 48px; /* Mobile touch target */
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .nav-btn.active {
-            color: var(--cyan);
-            background: rgba(0, 242, 255, 0.05);
-            text-shadow: 0 0 5px var(--cyan-glow);
-            box-shadow: inset 0 -3px 0 var(--cyan);
-        }
-
-        /* Forms */
-        .mode-section {
-            display: none;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .mode-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .input-group {
-            margin-bottom: 16px;
-            position: relative;
-        }
-
-        label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--cyan);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            color: var(--text-main);
-            padding: 12px;
-            min-height: 48px;
-            font-size: 1rem;
-            outline: none;
-            border-radius: 2px;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: var(--cyan);
-            box-shadow: 0 0 8px var(--cyan-glow);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        /* Action Controls */
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 12px;
-            padding: 20px;
-            border-top: 1px solid rgba(0, 242, 255, 0.2);
-        }
-
-        button.action-btn {
-            min-height: 54px;
-            font-size: 1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            border-radius: 2px;
-        }
-
-        .btn-reset {
-            background: transparent;
-            color: #ff4a4a;
-            border: 1px solid #ff4a4a;
-        }
-
-        .btn-knit {
-            background: rgba(0, 242, 255, 0.1);
-            color: var(--cyan);
-            border: 1px solid var(--cyan);
-            box-shadow: inset 0 0 10px var(--cyan-glow);
-        }
-
-        .btn-knit:active {
-            background: var(--cyan);
-            color: var(--bg-dark);
-        }
-
-        /* Circuit line accents */
-        .circuit-line {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-            margin: 10px 0;
-            opacity: 0.5;
-        }
-    </style>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#000000">
 </head>
-<body>
-
-<div class="loom-container">
-    <header>
-        <h1>The Viabhron Loom</h1>
+<body class="celestial-bg">
+    <div class="star-field"></div>
+    
+    <header class="top-nav">
+        <button class="nav-btn active" data-target="world-root">World Root</button>
+        <button class="nav-btn" data-target="life-seed">Life Seed</button>
+        <button class="nav-btn" data-target="soul-weaver">Soul Weaver</button>
+        <button class="nav-btn" data-target="world-pulse">World Pulse</button>
     </header>
 
-    <nav class="nav-grid">
-        <button class="nav-btn active" onclick="switchMode('world-root')">World Root</button>
-        <button class="nav-btn" onclick="switchMode('life-seed')">Life Seed</button>
-        <button class="nav-btn" onclick="switchMode('soul-weaver')">Soul Weaver</button>
-        <button class="nav-btn" onclick="switchMode('world-pulse')">World Pulse</button>
-    </nav>
+    <main class="loom-container">
+        <!-- WORLD ROOT -->
+        <section id="world-root" class="form-mode active">
+            <h2 class="glow-text">World Root</h2>
+            <div class="input-group">
+                <label>Root ID</label>
+                <input type="text" id="root-id" placeholder="e.g. IRON_VALLEY_X9">
+            </div>
+            <div class="input-group">
+                <label>Seed</label>
+                <input type="text" id="root-seed" placeholder="Celestial Coordinate 0.992">
+            </div>
+            <div class="input-group">
+                <label>Architecture Type</label>
+                <input type="text" id="root-arch" list="dl-architecture" placeholder="Knit Architecture...">
+                <datalist id="dl-architecture"></datalist>
+            </div>
+            <div class="input-group">
+                <label>Environment Vibe</label>
+                <input type="text" id="root-vibe" list="dl-env-vibe" placeholder="Knit Environment...">
+                <datalist id="dl-env-vibe"></datalist>
+            </div>
+            <div class="input-group">
+                <label>Connections</label>
+                <textarea id="root-connections" placeholder="e.g. VALLEY_NORTH, ABYSS_01, SKY_ANCHOR_04"></textarea>
+            </div>
+        </section>
 
-    <section id="world-root" class="mode-section active">
-        <div class="input-group">
-            <label>Root ID</label>
-            <input type="text" id="root-id" data-save="true" placeholder="e.g. root_001">
-        </div>
-        <div class="input-group">
-            <label>Generation Seed</label>
-            <input type="text" id="root-seed" data-save="true" placeholder="Alphanumeric string">
-        </div>
-        <div class="circuit-line"></div>
-        <div class="input-group">
-            <label>Architecture</label>
-            <select id="root-arch" data-save="true">
-                <option value="Forest">Forest</option>
-                <option value="Swamp">Swamp</option>
-                <option value="Ruins">Ruins</option>
-                <option value="Void">Void</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label>Connections (Paths/Portals)</label>
-            <textarea id="root-conn" data-save="true" placeholder="List connected nodes..."></textarea>
-        </div>
-    </section>
+        <!-- LIFE SEED -->
+        <section id="life-seed" class="form-mode">
+            <h2 class="glow-text">Life Seed</h2>
+            <div class="input-group">
+                <label>Seed ID</label>
+                <input type="text" id="seed-id" placeholder="ENTITY_HASH_77">
+            </div>
+            <div class="input-group">
+                <label>Entity Name</label>
+                <input type="text" id="seed-name" placeholder="Name the entity...">
+            </div>
+            <div class="input-group">
+                <label>World Origin</label>
+                <input type="text" id="seed-origin" list="dl-origin" placeholder="Knit Origin...">
+                <datalist id="dl-origin"></datalist>
+            </div>
+            <div class="input-group">
+                <label>Vibe Check & Behavior</label>
+                <textarea id="seed-behavior" placeholder="Docile until light touches its core..."></textarea>
+            </div>
+            <div class="stats-row">
+                <div class="input-group">
+                    <label>STR</label>
+                    <input type="number" id="stats-str" value="10">
+                </div>
+                <div class="input-group">
+                    <label>DEF</label>
+                    <input type="number" id="stats-def" value="10">
+                </div>
+                <div class="input-group">
+                    <label>AGI</label>
+                    <input type="number" id="stats-agi" value="10">
+                </div>
+            </div>
+        </section>
 
-    <section id="life-seed" class="mode-section">
-        <div class="input-group">
-            <label>Monster ID</label>
-            <input type="text" id="life-id" data-save="true" placeholder="e.g. mon_alpha">
-        </div>
-        <div class="input-group">
-            <label>Base Stats</label>
-            <input type="text" id="life-stats" data-save="true" placeholder="HP:10 ATK:5 DEF:2">
-        </div>
-        <div class="circuit-line"></div>
-        <div class="input-group">
-            <label>World/Env Type</label>
-            <input type="text" id="life-env" data-save="true" placeholder="Biome preference">
-        </div>
-        <div class="input-group">
-            <label>Behavioral Personality</label>
-            <textarea id="life-pers" data-save="true" placeholder="Aggressive, passive, territorial..."></textarea>
-        </div>
-    </section>
+        <!-- SOUL WEAVER -->
+        <section id="soul-weaver" class="form-mode">
+            <h2 class="glow-text">Soul Weaver</h2>
+            <div class="input-group">
+                <label>Soul ID</label>
+                <input type="text" id="soul-id" placeholder="SOUL_REF_ALPHA">
+            </div>
+            <div class="input-group">
+                <label>Role</label>
+                <input type="text" id="soul-role" list="dl-role" placeholder="Knit Role...">
+                <datalist id="dl-role"></datalist>
+            </div>
+            <div class="input-group">
+                <label>Drive Code</label>
+                <input type="text" id="soul-drive" list="dl-drive" placeholder="Knit Drive...">
+                <datalist id="dl-drive"></datalist>
+            </div>
+            <div class="input-group">
+                <label>Trauma Code</label>
+                <input type="text" id="soul-trauma" list="dl-trauma" placeholder="Knit Trauma...">
+                <datalist id="dl-trauma"></datalist>
+            </div>
+            <div class="input-group">
+                <label>Personality Hex</label>
+                <input type="text" id="soul-hex" maxlength="4" placeholder="F001">
+            </div>
+            <div class="input-group">
+                <label>Scribe Summon Class</label>
+                <input type="text" id="soul-class" placeholder="Void Caller / Star Reacher">
+            </div>
+        </section>
 
-    <section id="soul-weaver" class="mode-section">
-        <div class="input-group">
-            <label>Character ID</label>
-            <input type="text" id="soul-id" data-save="true" placeholder="e.g. char_main">
-        </div>
-        <div class="input-group">
-            <label>Drive / Trauma Codes</label>
-            <input type="text" id="soul-drive" data-save="true" placeholder="Primary motivators">
-        </div>
-        <div class="circuit-line"></div>
-        <div class="input-group">
-            <label>Personality Hex</label>
-            <input type="text" id="soul-hex" data-save="true" placeholder="6-point stat spread">
-        </div>
-        <div class="input-group">
-            <label>Scribe Summon Class</label>
-            <input type="text" id="soul-class" data-save="true" placeholder="Class designation">
-        </div>
-    </section>
+        <!-- WORLD PULSE -->
+        <section id="world-pulse" class="form-mode">
+            <h2 class="glow-text">World Pulse</h2>
+            <div class="input-group">
+                <label>Region ID</label>
+                <input type="text" id="pulse-id" placeholder="EPICENTER_0">
+            </div>
+            <div class="input-group">
+                <label>Power Structure</label>
+                <input type="text" id="pulse-power" list="dl-power" placeholder="Knit Power Schema...">
+                <datalist id="dl-power"></datalist>
+            </div>
+            <div class="input-group">
+                <label>Trade Vines & Currency</label>
+                <textarea id="pulse-trade" placeholder="Loom Shards and Celestial Favors..."></textarea>
+            </div>
+            <div class="input-group">
+                <label>Societal Taboos</label>
+                <textarea id="pulse-taboos" placeholder="Never speak of the Weaver..."></textarea>
+            </div>
+            <div class="input-group">
+                <label>Atmospheric Current</label>
+                <textarea id="pulse-current" placeholder="90% Ozone, 10% Magic Drift..."></textarea>
+            </div>
+        </section>
 
-    <section id="world-pulse" class="mode-section">
-        <div class="input-group">
-            <label>Sector ID</label>
-            <input type="text" id="pulse-id" data-save="true" placeholder="e.g. sec_tradehub">
-        </div>
-        <div class="input-group">
-            <label>Geopolitics / Local Power</label>
-            <textarea id="pulse-power" data-save="true" placeholder="Factions in control..."></textarea>
-        </div>
-        <div class="circuit-line"></div>
-        <div class="input-group">
-            <label>Trade Vines (Currency Logic)</label>
-            <textarea id="pulse-trade" data-save="true" placeholder="Primary exports/imports..."></textarea>
-        </div>
-        <div class="input-group">
-            <label>Local Laws</label>
-            <textarea id="pulse-laws" data-save="true" placeholder="Strictness, taboos..."></textarea>
-        </div>
-    </section>
+        <footer class="action-bar">
+            <button id="knit-btn" class="main-btn knit">Knit Data</button>
+            <button id="clear-btn" class="main-btn clear">Clear Loom</button>
+        </footer>
+    </main>
 
-    <div class="action-grid">
-        <button class="action-btn btn-reset" onclick="resetForm()">Purge</button>
-        <button class="action-btn btn-knit" onclick="knitData()">Knit JSON</button>
-    </div>
-</div>
-
-<script>
-    // System State
-    let currentMode = 'world-root';
-
-    // 1. Navigation Logic
-    function switchMode(modeId) {
-        document.querySelectorAll('.mode-section').forEach(sec => sec.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        
-        document.getElementById(modeId).classList.add('active');
-        event.currentTarget.classList.add('active');
-        currentMode = modeId;
-    }
-
-    // 2. Persistence Logic (localStorage)
-    function saveState() {
-        const inputs = document.querySelectorAll('[data-save="true"]');
-        const data = {};
-        inputs.forEach(input => {
-            data[input.id] = input.value;
-        });
-        localStorage.setItem('viabhron_loom_data', JSON.stringify(data));
-    }
-
-    function loadState() {
-        const saved = localStorage.getItem('viabhron_loom_data');
-        if (saved) {
-            const data = JSON.parse(saved);
-            Object.keys(data).forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.value = data[id];
-            });
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
         }
-    }
-
-    // Attach listeners for auto-save
-    document.querySelectorAll('[data-save="true"]').forEach(input => {
-        input.addEventListener('input', saveState);
-    });
-
-    // 3. Reset Logic
-    function resetForm() {
-        const activeSection = document.getElementById(currentMode);
-        const inputs = activeSection.querySelectorAll('[data-save="true"]');
-        inputs.forEach(input => input.value = '');
-        saveState(); // Update storage
-    }
-
-    // 4. Data Extraction & Download Logic
-    function knitData() {
-        const activeSection = document.getElementById(currentMode);
-        const inputs = activeSection.querySelectorAll('[data-save="true"]');
-        
-        let jsonObject = {
-            mode: currentMode,
-            timestamp: new Date().toISOString()
-        };
-
-        let fileId = 'unknown';
-
-        inputs.forEach(input => {
-            const key = input.id.split('-')[1]; // e.g. 'root-id' becomes 'id'
-            jsonObject[key] = input.value;
-            
-            // Look for the ID field to name the file
-            if (key === 'id' && input.value.trim() !== '') {
-                fileId = input.value.trim().replace(/[^a-z0-9_]/gi, '-');
-            }
-        });
-
-        // Format filename: [mode]_[id].json
-        const filename = `${currentMode}_${fileId}.json`;
-        
-        // Trigger Download
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonObject, null, 2));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", filename);
-        document.body.appendChild(downloadAnchorNode); 
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-    }
-
-    // Initialize on load
-    window.onload = loadState;
-</script>
-
+    </script>
 </body>
-  </html>
+</html>
